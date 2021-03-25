@@ -7,21 +7,12 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-import actions.all_entries as AE
 import actions
-
-
-# Global reference to all entries object
-#entry_obj = None
-#user_pwd = ""
 
 
 class File:
     @staticmethod
     def create_file(pwd: str):
-        #global user_pwd
-        #user_pwd = pwd
-
         encoded_key = pwd.encode()
         salt = b'eyuihdbsjc78fdsa4676ghgsgfs'
 
@@ -38,9 +29,7 @@ class File:
         # Create the basestore. json for the file and write it
         # to the newly created file
         with open("pass.kalina", "w") as f:
-            data = {}
-            data["passwords"] = []
-            json.dump(data, f)
+            json.dump([], f)
 
         # Read the bytes from the file to encrypt it
         with open("pass.kalina", "rb") as f:
@@ -91,10 +80,6 @@ class File:
         the user's password. Then, it updates the object to include the
         data read and if the password was validated.
         """
-        #global entry_obj
-        #global user_pwd
-
-        #user_pwd = pwd
 
         encoded_key = pwd.encode()
         salt = b'eyuihdbsjc78fdsa4676ghgsgfs'
@@ -129,11 +114,6 @@ class File:
             response["validated"] = True
             response["data"] = decrypted_json
 
-            # Since the password is validate, we create the object
-            # that contains all the passwords and performs actions
-            # on them
-            #entry_obj = AE.AllPasswords(decrypted["passwords"])
-
             actions.Store.passwords = decrypted_json
             actions.Store.user_pwd = pwd
 
@@ -141,15 +121,3 @@ class File:
             print("Invalid Key - Unsuccessfully decrypted")
 
         return response
-
-    # @staticmethod
-    # def get_entry_obj():
-    #     global entry_obj
-
-    #     return entry_obj
-
-    # @staticmethod
-    # def get_user_pwd():
-    #     global user_pwd
-
-    #     return user_pwd

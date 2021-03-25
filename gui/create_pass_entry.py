@@ -1,7 +1,6 @@
 from actions.store import Store
 from actions.file import File
 import tkinter as tk
-import actions.all_entries as AE
 
 
 class PassPopUp:
